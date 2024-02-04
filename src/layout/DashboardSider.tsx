@@ -1,7 +1,11 @@
 import Sider from "antd/es/layout/Sider";
 import { DashboardLogo } from "./DashboardLogo";
 import { Menu } from "antd";
-import { PieChartOutlined, AudioOutlined } from "@ant-design/icons";
+import {
+  PieChartOutlined,
+  AudioOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -55,7 +59,8 @@ const DashboardSider = ({ collapsed }: { collapsed: boolean }) => {
    */
   const sidebarMenuItems = [
     getItem("Stats", "stats", <PieChartOutlined />, null, "link"),
-    getItem("Songs", "songs", <AudioOutlined />, null, "link"),
+    getItem("Artists", "artists", <AudioOutlined />, null, "link"),
+    getItem("Songs", "songs", <PlayCircleOutlined />, null, "link"),
   ];
 
   return (
