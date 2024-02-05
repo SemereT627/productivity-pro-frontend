@@ -1,15 +1,23 @@
 import styled from "@emotion/styled";
-import { Button, Table, Typography } from "antd";
-import { useEffect } from "react";
+import { Button, Popconfirm, Table, Typography } from "antd";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchAlbumsStart } from "../../store/features/album.slice";
 import { useSelector } from "react-redux";
 import { RootStates } from "../../store/interface";
+import { Album } from "../../store/types/album.types";
+import CustomDrawer from "../../components/common/Drawer";
+import AlbumForm from "../../components/dashboard/album/forms/AlbumForm";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const DashboardAlbumPage = () => {
   /**
    * states
    */
+  const [openCreateAlbumDrawer, setOpenCreateAlbumDrawer] = useState(false);
+  const [openEditAlbumDrawer, setOpenEditAlbumDrawer] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState<Album>();
+
   /**
    * hooks
    */
@@ -19,18 +27,29 @@ const DashboardAlbumPage = () => {
    * selectors
    */
   const { albums, loading } = useSelector((state: RootStates) => state.albums);
+
   /**
    * functions
    */
+  const handleCreateAlbumDrawerClose = () => {
+    setOpenCreateAlbumDrawer(false);
+  };
+
+  const handleEditAlbumDrawerClose = () => {
+    setOpenEditAlbumDrawer(false);
+  };
+
   /**
    * effects
    */
   useEffect(() => {
     dispatch(fetchAlbumsStart());
   }, [dispatch]);
+
   /**
    * yup and formik
    */
+
   /**
    * variables
    */
@@ -53,6 +72,32 @@ const DashboardAlbumPage = () => {
     {
       title: "Actions",
       dataIndex: "actions",
+      key: "actions",
+      render: (album: Album) => (
+        <>
+          <Button
+            type="link"
+            onClick={() => {
+              setSelectedAlbum(album);
+              setOpenEditAlbumDrawer(true);
+            }}
+          >
+            <EditOutlined /> Edit
+          </Button>
+          <Popconfirm
+            title="Are you sure?"
+            okText="Yes"
+            okType="danger"
+            cancelText="No"
+            // onConfirm={() => dispatch(deleteDriverAsync(id))}
+            // disabled={deleteDriverLoading}
+          >
+            <Button danger>
+              <DeleteOutlined /> Delete
+            </Button>
+          </Popconfirm>
+        </>
+      ),
     },
   ];
 
@@ -69,7 +114,9 @@ const DashboardAlbumPage = () => {
         <Typography.Title level={4} style={{ margin: 0 }}>
           Albums
         </Typography.Title>
-        <Button type="primary">Create Album</Button>
+        <Button type="primary" onClick={() => setOpenCreateAlbumDrawer(true)}>
+          Create Album
+        </Button>
       </TableHeaderWrapper>
       <Table
         rowKey="_id"
@@ -77,6 +124,28 @@ const DashboardAlbumPage = () => {
         columns={columns}
         dataSource={albums}
       />
+
+      <CustomDrawer
+        title={"Create Album"}
+        onClose={handleCreateAlbumDrawerClose}
+        open={openCreateAlbumDrawer}
+      >
+        <AlbumForm
+          album={selectedAlbum}
+          onClose={handleCreateAlbumDrawerClose}
+        />
+      </CustomDrawer>
+      <CustomDrawer
+        title={"Edit Album"}
+        onClose={handleEditAlbumDrawerClose}
+        open={openEditAlbumDrawer}
+      >
+        <AlbumForm
+          isEdit
+          album={selectedAlbum}
+          onClose={handleEditAlbumDrawerClose}
+        />
+      </CustomDrawer>
     </>
   );
 };

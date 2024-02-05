@@ -72,7 +72,7 @@ const DashboardGenrePage = () => {
               setOpenEditGenreDrawer(true);
             }}
           >
-            Edit
+            <EditOutlined /> Edit
           </Button>
           <Popconfirm
             title="Are you sure?"
