@@ -37,7 +37,6 @@ const DashboardSongPage = () => {
 
   const handleEditSongDrawerClose = () => {
     setOpenEditSongDrawer(false);
-    setSelectedSong(undefined);
   };
 
   /**

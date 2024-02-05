@@ -62,9 +62,9 @@ const DashboardSider = ({ collapsed }: { collapsed: boolean }) => {
   const sidebarMenuItems = [
     getItem("Stats", "stats", <PieChartOutlined />, null, "link"),
     getItem("Artists", "artists", <AudioOutlined />, null, "link"),
-    getItem("Songs", "songs", <PlayCircleOutlined />, null, "link"),
     getItem("Genres", "genres", <BarsOutlined />, null, "link"),
     getItem("Albums", "albums", <AppstoreOutlined />, null, "link"),
+    getItem("Songs", "songs", <PlayCircleOutlined />, null, "link"),
   ];
 
   return (

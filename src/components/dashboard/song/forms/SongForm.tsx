@@ -71,6 +71,7 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
     if (error) {
       globalNotification("error", error);
       dispatch(clearCreateSong());
+      dispatch(clearUpdateSong());
     }
   }, [createSongSuccess, updateSongSuccess, form, dispatch, onClose, error]);
 
