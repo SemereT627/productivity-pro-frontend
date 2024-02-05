@@ -21,7 +21,7 @@ const updateArtist = async (artist: Artist) => {
   return response.data;
 };
 
-const deleteArtist = async (id: number) => {
+const deleteArtist = async (id: string) => {
   const response = await api.delete<Artist>(`${ARTISTS_URL}/${id}`);
   return response.data;
 };

@@ -19,7 +19,7 @@ const updateSong = async (song: Song) => {
   return response.data;
 };
 
-const deleteSong = async (id: number) => {
+const deleteSong = async (id: string) => {
   const response = await api.delete<Song>(`${SONGS_URL}/${id}`);
   return response.data;
 };

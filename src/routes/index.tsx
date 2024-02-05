@@ -21,6 +21,7 @@ export default function Router() {
         { path: "stats", element: <DashboardStatPage /> },
         { path: "songs", element: <DashboardSongPage /> },
         { path: "artists", element: <DashboardArtistPage /> },
+        { path: "genres", element: <DashboardGenrePage /> },
       ],
     },
     {
@@ -49,6 +50,9 @@ const DashboardSongPage = Loadable(
 );
 const DashboardArtistPage = Loadable(
   lazy(() => import("../pages/dashboard/DashboardArtistPage"))
+);
+const DashboardGenrePage = Loadable(
+  lazy(() => import("../pages/dashboard/DashboardGenrePage"))
 );
 
 const NotFoundPage = Loadable(
