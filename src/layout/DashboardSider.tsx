@@ -5,6 +5,8 @@ import {
   PieChartOutlined,
   AudioOutlined,
   PlayCircleOutlined,
+  BarsOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -61,6 +63,8 @@ const DashboardSider = ({ collapsed }: { collapsed: boolean }) => {
     getItem("Stats", "stats", <PieChartOutlined />, null, "link"),
     getItem("Artists", "artists", <AudioOutlined />, null, "link"),
     getItem("Songs", "songs", <PlayCircleOutlined />, null, "link"),
+    getItem("Genres", "genres", <BarsOutlined />, null, "link"),
+    getItem("Albums", "albums", <AppstoreOutlined />, null, "link"),
   ];
 
   return (
