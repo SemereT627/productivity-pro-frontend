@@ -1,7 +1,7 @@
 export type Song = {
   _id?: string;
   title: string;
-  artist: string;
+  duration: string;
   album: string;
   genre: string;
   createdAt?: string;

@@ -60,9 +60,9 @@ const DashboardSongPage = () => {
       key: "title",
     },
     {
-      title: "Artist",
-      dataIndex: "artist",
-      key: "artist",
+      title: "Duration",
+      dataIndex: "duration",
+      key: "duration",
     },
     {
       title: "Album",
@@ -139,6 +139,7 @@ const DashboardSongPage = () => {
         loading={loading}
         columns={columns}
         dataSource={songs}
+        scroll={{ x: 1200 }}
       />
 
       <CustomDrawer

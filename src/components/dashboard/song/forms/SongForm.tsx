@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, Col, Form, Input, Row } from "antd";
+import { Button, Col, Form, Input, Row, Select, TimePicker } from "antd";
 import { useDispatch } from "react-redux";
 import {
   clearCreateSong,
@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import { RootStates } from "../../../../store/interface";
 import { useEffect } from "react";
 import { globalNotification } from "../../../../utils/notifications";
+import { fetchGenresStart } from "../../../../store/features/genre.slice";
+import dayjs from "dayjs";
 
 type SongFormProps = {
   onClose: () => void;
@@ -23,6 +25,7 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
   /**
    * states
    */
+  const { Option } = Select;
 
   /**
    * hooks
@@ -36,13 +39,24 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
   const { createSongSuccess, loading, error, updateSongSuccess } = useSelector(
     (state: RootStates) => state.songs
   );
+  const { genres, loading: fetchGenreLoading } = useSelector(
+    (state: RootStates) => state.genres
+  );
+  const { albums, loading: fetchAlbumsLoading } = useSelector(
+    (state: RootStates) => state.albums
+  );
 
   /**
    * functions
    */
   const handleSubmit = (values: Song) => {
-    if (isEdit) dispatch(updateSongStart({ ...values, _id: song?._id }));
-    else dispatch(createSongStart(values));
+    const result = {
+      ...values,
+      duration: dayjs(values.duration).format("mm:ss"),
+    };
+    console.log(result);
+    if (isEdit) dispatch(updateSongStart({ ...result, _id: song?._id }));
+    else dispatch(createSongStart(result));
   };
 
   const onReset = () => {
@@ -52,6 +66,9 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
   /**
    * effects
    */
+  useEffect(() => {
+    dispatch(fetchGenresStart());
+  }, [dispatch]);
 
   useEffect(() => {
     if (createSongSuccess) {
@@ -101,7 +118,7 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
         isEdit
           ? {
               title: song?.title,
-              artist: song?.artist,
+              duration: dayjs(song?.duration, "mm:ss"),
               album: song?.album,
               genre: song?.genre,
             }
@@ -134,8 +151,8 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
             <Input size="large" placeholder="Type the title of the song" />
           </FormItemStyled>
           <FormItemStyled
-            name={"artist"}
-            label="Artist"
+            name={"duration"}
+            label="Duration"
             hasFeedback
             rules={[
               {
@@ -143,7 +160,12 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
               },
             ]}
           >
-            <Input size="large" placeholder="Type the artist of the song" />
+            <TimePicker
+              size="large"
+              style={{ width: "100%" }}
+              placeholder="Select duration"
+              type="time"
+            />
           </FormItemStyled>
           <FormItemStyled
             name={"album"}
@@ -155,7 +177,22 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
               },
             ]}
           >
-            <Input size="large" placeholder="Type the album of the song" />
+            <Select
+              loading={fetchAlbumsLoading}
+              size="large"
+              showSearch
+              placeholder="Select album"
+              className="!h-[35.96px] !border !rounded-l-lg border-none outline-none select-style"
+              optionFilterProp="children"
+            >
+              {albums.map((album) => {
+                return (
+                  <Option key={album._id} value={album._id}>
+                    {album.title}
+                  </Option>
+                );
+              })}
+            </Select>
           </FormItemStyled>
           <FormItemStyled
             name={"genre"}
@@ -167,7 +204,22 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
               },
             ]}
           >
-            <Input size="large" placeholder="Type the genre of the song" />
+            <Select
+              loading={fetchGenreLoading}
+              size="large"
+              showSearch
+              placeholder="Select genre"
+              className="!h-[35.96px] !border !rounded-l-lg border-none outline-none select-style"
+              optionFilterProp="children"
+            >
+              {genres.map((genre) => {
+                return (
+                  <Option key={genre._id} value={genre._id}>
+                    {genre.name}
+                  </Option>
+                );
+              })}
+            </Select>
           </FormItemStyled>
         </Col>
 
