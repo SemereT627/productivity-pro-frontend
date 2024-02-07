@@ -71,14 +71,14 @@ const DashboardAlbumPage = () => {
     },
     {
       title: "Actions",
-      dataIndex: "actions",
+      dataIndex: "id",
       key: "actions",
-      render: (album: Album) => (
+      render: (_: unknown, record: Album) => (
         <>
           <Button
             type="link"
             onClick={() => {
-              setSelectedAlbum(album);
+              setSelectedAlbum(record);
               setOpenEditAlbumDrawer(true);
             }}
           >

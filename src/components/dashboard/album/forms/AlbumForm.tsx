@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Row } from "antd";
+import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
 import { useDispatch } from "react-redux";
 import { RootStates } from "../../../../store/interface";
 import { useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import { globalNotification } from "../../../../utils/notifications";
 import styled from "@emotion/styled";
 import { Album } from "../../../../store/types/album.types";
 import dayjs from "dayjs";
+import { fetchArtistsStart } from "../../../../store/features/artist.slice";
 
 type AlbumFormProps = {
   isEdit?: boolean;
@@ -21,9 +22,11 @@ type AlbumFormProps = {
 };
 
 const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
+  console.log(album);
   /**
    * states
    */
+  const { Option } = Select;
 
   /**
    * hooks
@@ -34,6 +37,9 @@ const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
   /**
    * selectors
    */
+  const { artists, loading: fetchArtistsLoading } = useSelector(
+    (state: RootStates) => state.artists
+  );
   const { createAlbumSuccess, loading, error, updateAlbumSuccess } =
     useSelector((state: RootStates) => state.albums);
 
@@ -41,6 +47,7 @@ const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
    * functions
    */
   const handleSubmit = (values: Album) => {
+    console.log(values);
     if (isEdit) dispatch(updateAlbumStart({ ...values, _id: album?._id }));
     else dispatch(createAlbumStart(values));
   };
@@ -52,6 +59,9 @@ const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
   /**
    * effects
    */
+  useEffect(() => {
+    dispatch(fetchArtistsStart());
+  }, [dispatch]);
 
   useEffect(() => {
     if (createAlbumSuccess) {
@@ -101,7 +111,7 @@ const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
         isEdit
           ? {
               title: album?.title,
-              releaseDate: album?.releaseDate,
+              releaseDate: dayjs(album?.releaseDate),
               artist: album?.artist,
             }
           : {}
@@ -147,7 +157,22 @@ const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
                 name="artist"
                 rules={[{ required: true }]}
               >
-                <Input size="large" placeholder="Type the artist name" />
+                <Select
+                  loading={fetchArtistsLoading}
+                  size="large"
+                  showSearch
+                  placeholder="Select artist"
+                  className="!h-[35.96px] !border !rounded-l-lg border-none outline-none select-style"
+                  optionFilterProp="children"
+                >
+                  {artists.map((artist) => {
+                    return (
+                      <Option key={artist._id} value={artist._id}>
+                        {artist.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </FormItemStyled>
             </Col>
           </Row>
