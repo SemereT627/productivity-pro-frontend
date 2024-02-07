@@ -133,7 +133,7 @@ const ArtistForm = ({ isEdit, artist, onClose }: ArtistFormProps) => {
                 name="name"
                 rules={[{ required: true }]}
               >
-                <Input placeholder="Type the artist name" />
+                <Input size="large" placeholder="Type the artist name" />
               </FormItemStyled>
             </Col>
             <Col span={24}>

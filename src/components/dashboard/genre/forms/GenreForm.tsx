@@ -122,7 +122,7 @@ const GenreForm = ({ isEdit, genre, onClose }: GenreFormProps) => {
                 name="name"
                 rules={[{ required: true }]}
               >
-                <Input placeholder="Type the genre name" />
+                <Input size="large" placeholder="Type the genre name" />
               </FormItemStyled>
             </Col>
           </Row>
