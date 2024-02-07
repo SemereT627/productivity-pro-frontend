@@ -68,11 +68,13 @@ const DashboardSongPage = () => {
       title: "Album",
       dataIndex: "album",
       key: "album",
+      render: (_: unknown, record: Song) => <span>{record.album?.title}</span>,
     },
     {
       title: "Genre",
       dataIndex: "genre",
       key: "genre",
+      render: (_: unknown, record: Song) => <span>{record.genre.name}</span>,
     },
     {
       title: "Created At",

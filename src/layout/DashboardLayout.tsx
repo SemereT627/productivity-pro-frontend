@@ -46,7 +46,7 @@ const DashboardLayout = () => {
       }}
     >
       <DashboardSider collapsed={collapsed} />
-      <Layout>
+      <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
         <DashboardHeader
           collapsed={collapsed}
           setCollapsed={setCollapsed}
@@ -58,6 +58,7 @@ const DashboardLayout = () => {
             padding: 24,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            overflow: "initial",
           }}
         >
           <Outlet />

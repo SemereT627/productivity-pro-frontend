@@ -1,8 +1,10 @@
+import { Artist } from "./artist.types";
+
 export type Album = {
   _id?: string;
   title: string;
   releaseDate: string;
-  artist: string;
+  artist: Artist;
   createdAt?: string;
   updatedAt?: string;
 };

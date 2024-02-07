@@ -68,6 +68,9 @@ const DashboardAlbumPage = () => {
       title: "Artist",
       dataIndex: "artist",
       key: "artist",
+      render: (_: unknown, record: Album) => (
+        <Typography.Text>{record.artist.name}</Typography.Text>
+      ),
     },
     {
       title: "Actions",

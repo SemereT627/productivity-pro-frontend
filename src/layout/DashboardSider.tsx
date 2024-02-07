@@ -68,7 +68,19 @@ const DashboardSider = ({ collapsed }: { collapsed: boolean }) => {
   ];
 
   return (
-    <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Sider
+      trigger={null}
+      collapsible
+      collapsed={collapsed}
+      style={{
+        overflow: "auto",
+        height: "100vh",
+        position: "fixed",
+        left: 0,
+        top: 0,
+        bottom: 0,
+      }}
+    >
       <DashboardLogo />
       <Menu
         theme="dark"

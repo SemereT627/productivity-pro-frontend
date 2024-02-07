@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { globalNotification } from "../../../../utils/notifications";
 import { fetchGenresStart } from "../../../../store/features/genre.slice";
 import dayjs from "dayjs";
+import { fetchAlbumsStart } from "../../../../store/features/album.slice";
 
 type SongFormProps = {
   onClose: () => void;
@@ -54,7 +55,6 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
       ...values,
       duration: dayjs(values.duration).format("mm:ss"),
     };
-    console.log(result);
     if (isEdit) dispatch(updateSongStart({ ...result, _id: song?._id }));
     else dispatch(createSongStart(result));
   };
@@ -68,6 +68,7 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
    */
   useEffect(() => {
     dispatch(fetchGenresStart());
+    dispatch(fetchAlbumsStart());
   }, [dispatch]);
 
   useEffect(() => {
@@ -119,8 +120,8 @@ const SongForm = ({ isEdit, song, onClose }: SongFormProps) => {
           ? {
               title: song?.title,
               duration: dayjs(song?.duration, "mm:ss"),
-              album: song?.album,
-              genre: song?.genre,
+              album: song?.album?._id,
+              genre: song?.genre?._id,
             }
           : undefined
       }

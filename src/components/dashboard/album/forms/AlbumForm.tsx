@@ -46,7 +46,6 @@ const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
    * functions
    */
   const handleSubmit = (values: Album) => {
-    console.log(values);
     if (isEdit) dispatch(updateAlbumStart({ ...values, _id: album?._id }));
     else dispatch(createAlbumStart(values));
   };
@@ -111,7 +110,7 @@ const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
           ? {
               title: album?.title,
               releaseDate: dayjs(album?.releaseDate),
-              artist: album?.artist,
+              artist: album?.artist?._id,
             }
           : {}
       }

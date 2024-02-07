@@ -1,9 +1,12 @@
+import { Album } from "./album.types";
+import { Genre } from "./genre.types";
+
 export type Song = {
   _id?: string;
   title: string;
   duration: string;
-  album: string;
-  genre: string;
+  album: Album;
+  genre: Genre;
   createdAt?: string;
   updatedAt?: string;
 };
