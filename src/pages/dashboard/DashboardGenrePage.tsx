@@ -9,6 +9,7 @@ import { Genre } from "../../store/types/genre.types";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomDrawer from "../../components/common/Drawer";
 import GenreForm from "../../components/dashboard/genre/forms/GenreForm";
+import { humanizeDateUTCWithTime } from "../../utils/humanizeDate";
 
 const DashboardGenrePage = () => {
   /**
@@ -58,6 +59,20 @@ const DashboardGenrePage = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_: unknown, record: Genre) =>
+        humanizeDateUTCWithTime(record.createdAt!),
+    },
+    {
+      title: "Updated At",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (_: unknown, record: Genre) =>
+        humanizeDateUTCWithTime(record.updatedAt!),
     },
     {
       title: "Actions",

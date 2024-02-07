@@ -9,6 +9,7 @@ import { Album } from "../../store/types/album.types";
 import CustomDrawer from "../../components/common/Drawer";
 import AlbumForm from "../../components/dashboard/album/forms/AlbumForm";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { humanizeDateUTCWithTime } from "../../utils/humanizeDate";
 
 const DashboardAlbumPage = () => {
   /**
@@ -63,6 +64,8 @@ const DashboardAlbumPage = () => {
       title: "Release Date",
       dataIndex: "releaseDate",
       key: "releaseDate",
+      render: (_: unknown, record: Album) =>
+        humanizeDateUTCWithTime(record.releaseDate),
     },
     {
       title: "Artist",
@@ -71,6 +74,20 @@ const DashboardAlbumPage = () => {
       render: (_: unknown, record: Album) => (
         <Typography.Text>{record.artist.name}</Typography.Text>
       ),
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_: unknown, record: Album) =>
+        humanizeDateUTCWithTime(record.createdAt!),
+    },
+    {
+      title: "Updated At",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (_: unknown, record: Album) =>
+        humanizeDateUTCWithTime(record.updatedAt!),
     },
     {
       title: "Actions",

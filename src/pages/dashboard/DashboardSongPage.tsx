@@ -9,6 +9,7 @@ import CustomDrawer from "../../components/common/Drawer";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Song } from "../../store/types/song.types";
 import SongForm from "../../components/dashboard/song/forms/SongForm";
+import { humanizeDateUTCWithTime } from "../../utils/humanizeDate";
 
 const DashboardSongPage = () => {
   /**
@@ -80,11 +81,15 @@ const DashboardSongPage = () => {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (_: unknown, record: Song) =>
+        humanizeDateUTCWithTime(record.createdAt!),
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
       key: "updatedAt",
+      render: (_: unknown, record: Song) =>
+        humanizeDateUTCWithTime(record.updatedAt!),
     },
     {
       title: "Actions",

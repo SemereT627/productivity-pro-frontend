@@ -9,6 +9,10 @@ import { Artist } from "../../store/types/artist.types";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomDrawer from "../../components/common/Drawer";
 import ArtistForm from "../../components/dashboard/artist/forms/ArtistForm";
+import {
+  humanizeDateUTCWithTime,
+  humanizeDateUTCWithoutTime,
+} from "../../utils/humanizeDate";
 
 const DashboardArtistPage = () => {
   /**
@@ -65,6 +69,22 @@ const DashboardArtistPage = () => {
       title: "Birth Date",
       dataIndex: "birthDate",
       key: "birthDate",
+      render: (_: unknown, record: Artist) =>
+        humanizeDateUTCWithoutTime(record.birthDate),
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_: unknown, record: Artist) =>
+        humanizeDateUTCWithTime(record.createdAt!),
+    },
+    {
+      title: "Updated At",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (_: unknown, record: Artist) =>
+        humanizeDateUTCWithTime(record.updatedAt!),
     },
     {
       title: "Actions",
