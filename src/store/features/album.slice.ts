@@ -4,6 +4,7 @@ import { AlbumState } from "../types/album.types";
 const INITIAL_STATE: AlbumState = {
   loading: false,
   createAlbumSuccess: false,
+  delAlbumSuccess: false,
   updateAlbumSuccess: false,
   error: "",
 
@@ -65,6 +66,26 @@ const albumSlice = createSlice({
       state.updateAlbumSuccess = false;
       state.error = "";
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    deleteAlbumStart: (state: AlbumState, action) => {
+      state.loading = true;
+    },
+    deleteAlbumSuccess: (state: AlbumState, action) => {
+      state.loading = false;
+      state.delAlbumSuccess = true;
+      state.albums = state.albums.filter(
+        (album) => album._id !== action.payload
+      );
+    },
+    deleteAlbumFailure: (state: AlbumState, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clearDeleteAlbum: (state: AlbumState) => {
+      state.loading = false;
+      state.delAlbumSuccess = false;
+      state.error = "";
+    },
   },
 });
 
@@ -80,6 +101,10 @@ export const {
   updateAlbumSuccess,
   updateAlbumFailure,
   clearUpdateAlbum,
+  deleteAlbumStart,
+  deleteAlbumSuccess,
+  deleteAlbumFailure,
+  clearDeleteAlbum,
 } = albumSlice.actions;
 
 export default albumSlice;

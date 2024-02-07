@@ -2,7 +2,11 @@ import styled from "@emotion/styled";
 import { Button, Popconfirm, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchAlbumsStart } from "../../store/features/album.slice";
+import {
+  clearDeleteAlbum,
+  deleteAlbumStart,
+  fetchAlbumsStart,
+} from "../../store/features/album.slice";
 import { useSelector } from "react-redux";
 import { RootStates } from "../../store/interface";
 import { Album } from "../../store/types/album.types";
@@ -10,6 +14,9 @@ import CustomDrawer from "../../components/common/Drawer";
 import AlbumForm from "../../components/dashboard/album/forms/AlbumForm";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { humanizeDateUTCWithTime } from "../../utils/humanizeDate";
+import { globalNotification } from "../../utils/notifications";
+import { fetchArtistsStart } from "../../store/features/artist.slice";
+import { CustomError } from "../../store/types/common.types";
 
 const DashboardAlbumPage = () => {
   /**
@@ -27,7 +34,9 @@ const DashboardAlbumPage = () => {
   /**
    * selectors
    */
-  const { albums, loading } = useSelector((state: RootStates) => state.albums);
+  const { albums, delAlbumSuccess, loading, error } = useSelector(
+    (state: RootStates) => state.albums
+  );
 
   /**
    * functions
@@ -46,6 +55,27 @@ const DashboardAlbumPage = () => {
   useEffect(() => {
     dispatch(fetchAlbumsStart());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchArtistsStart());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (delAlbumSuccess) {
+      globalNotification("success", "Album deleted successfully");
+      dispatch(clearDeleteAlbum());
+    }
+
+    if (typeof error !== "string") {
+      globalNotification("error", (error as CustomError).response.data.error);
+      dispatch(clearDeleteAlbum());
+    }
+
+    if (typeof error === "string" && error) {
+      globalNotification("error", error);
+      dispatch(clearDeleteAlbum());
+    }
+  }, [delAlbumSuccess, dispatch, error]);
 
   /**
    * yup and formik
@@ -72,7 +102,7 @@ const DashboardAlbumPage = () => {
       dataIndex: "artist",
       key: "artist",
       render: (_: unknown, record: Album) => (
-        <Typography.Text>{record.artist.name}</Typography.Text>
+        <Typography.Text>{record?.artist?.name}</Typography.Text>
       ),
     },
     {
@@ -109,8 +139,8 @@ const DashboardAlbumPage = () => {
             okText="Yes"
             okType="danger"
             cancelText="No"
-            // onConfirm={() => dispatch(deleteDriverAsync(id))}
-            // disabled={deleteDriverLoading}
+            onConfirm={() => dispatch(deleteAlbumStart(record._id))}
+            disabled={loading}
           >
             <Button danger>
               <DeleteOutlined /> Delete

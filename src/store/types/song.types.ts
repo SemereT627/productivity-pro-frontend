@@ -1,4 +1,5 @@
 import { Album } from "./album.types";
+import { CustomError } from "./common.types";
 import { Genre } from "./genre.types";
 
 export type Song = {
@@ -15,13 +16,15 @@ export type SongState = {
   songs: Song[];
   loading: boolean;
   createSongSuccess: boolean;
+  delSongSuccess: boolean;
   updateSongSuccess: boolean;
-  error: string;
+  error: CustomError | string;
 };
 
 export type SongResponse = {
   songs: Song[];
   song: Song;
+  _id: string;
 };
 
 export type CreateSong = {

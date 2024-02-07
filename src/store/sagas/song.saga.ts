@@ -38,10 +38,23 @@ function* updateSongSaga(action: { payload: Song }) {
   }
 }
 
+function* deleteSongSaga(action: { payload: string }) {
+  try {
+    const response: SongResponse = yield call(
+      songApi.deleteSong,
+      action.payload
+    );
+    yield put(actions.deleteSongSuccess(response._id));
+  } catch (error) {
+    yield put(actions.deleteSongFailure(error));
+  }
+}
+
 function* songsSaga() {
   yield takeEvery(actions.fetchSongsStart, fetchSongsSaga);
   yield takeEvery(actions.createSongStart, createSongSaga);
   yield takeEvery(actions.updateSongStart, updateSongSaga);
+  yield takeEvery(actions.deleteSongStart, deleteSongSaga);
 }
 
 export default songsSaga;

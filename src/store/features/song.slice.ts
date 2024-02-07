@@ -4,6 +4,7 @@ import { SongState } from "../types/song.types";
 const INITIAL_STATE: SongState = {
   loading: false,
   createSongSuccess: false,
+  delSongSuccess: false,
   updateSongSuccess: false,
   error: "",
 
@@ -65,16 +66,23 @@ const songSlice = createSlice({
       state.updateSongSuccess = false;
       state.error = "";
     },
-    deleteSongStart: (state: SongState) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    deleteSongStart: (state: SongState, action) => {
       state.loading = true;
     },
     deleteSongSuccess: (state: SongState, action) => {
       state.loading = false;
+      state.delSongSuccess = true;
       state.songs = state.songs.filter((song) => song._id !== action.payload);
     },
     deleteSongFailure: (state: SongState, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    clearDeleteSong: (state: SongState) => {
+      state.loading = false;
+      state.delSongSuccess = false;
+      state.error = "";
     },
   },
 });
@@ -94,6 +102,7 @@ export const {
   deleteSongStart,
   deleteSongSuccess,
   deleteSongFailure,
+  clearDeleteSong,
 } = songSlice.actions;
 
 export default songSlice;

@@ -3,13 +3,19 @@ import { useSelector } from "react-redux";
 import { RootStates } from "../../store/interface";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchSongsStart } from "../../store/features/song.slice";
+import {
+  clearDeleteSong,
+  deleteSongStart,
+  fetchSongsStart,
+} from "../../store/features/song.slice";
 import styled from "@emotion/styled";
 import CustomDrawer from "../../components/common/Drawer";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Song } from "../../store/types/song.types";
 import SongForm from "../../components/dashboard/song/forms/SongForm";
 import { humanizeDateUTCWithTime } from "../../utils/humanizeDate";
+import { globalNotification } from "../../utils/notifications";
+import { CustomError } from "../../store/types/common.types";
 
 const DashboardSongPage = () => {
   /**
@@ -27,7 +33,9 @@ const DashboardSongPage = () => {
   /**
    * selectors
    */
-  const { songs, loading } = useSelector((state: RootStates) => state.songs);
+  const { songs, delSongSuccess, loading, error } = useSelector(
+    (state: RootStates) => state.songs
+  );
 
   /**
    * functions
@@ -46,6 +54,23 @@ const DashboardSongPage = () => {
   useEffect(() => {
     dispatch(fetchSongsStart());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (delSongSuccess) {
+      globalNotification("success", "Song deleted successfully");
+      dispatch(clearDeleteSong());
+    }
+
+    if (typeof error !== "string" && error) {
+      globalNotification("error", (error as CustomError).response.data.error);
+      dispatch(clearDeleteSong());
+    }
+
+    if (typeof error === "string" && error) {
+      globalNotification("error", error);
+      dispatch(clearDeleteSong());
+    }
+  }, [delSongSuccess, dispatch, error]);
 
   /**
    * yup and formik
@@ -94,7 +119,7 @@ const DashboardSongPage = () => {
     {
       title: "Actions",
       key: "action",
-      render: (_text: unknown, record: unknown) => {
+      render: (_text: unknown, record: Song) => {
         return (
           <>
             <Button
@@ -111,8 +136,8 @@ const DashboardSongPage = () => {
               okText="Yes"
               okType="danger"
               cancelText="No"
-              // onConfirm={() => dispatch(deleteDriverAsync(id))}
-              // disabled={deleteDriverLoading}
+              onConfirm={() => dispatch(deleteSongStart(record._id!))}
+              disabled={loading}
             >
               <Button danger>
                 <DeleteOutlined /> Delete

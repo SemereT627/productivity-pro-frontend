@@ -18,6 +18,7 @@ import {
   humanizeDateUTCWithoutTime,
 } from "../../utils/humanizeDate";
 import { globalNotification } from "../../utils/notifications";
+import { CustomError } from "../../store/types/common.types";
 
 const DashboardArtistPage = () => {
   /**
@@ -63,7 +64,12 @@ const DashboardArtistPage = () => {
       dispatch(clearDeleteArtist());
     }
 
-    if (error) {
+    if (typeof error !== "string") {
+      globalNotification("error", (error as CustomError).response.data.error);
+      dispatch(clearDeleteArtist());
+    }
+
+    if (typeof error === "string" && error) {
       globalNotification("error", error);
       dispatch(clearDeleteArtist());
     }

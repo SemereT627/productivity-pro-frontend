@@ -1,3 +1,5 @@
+import { CustomError } from "./common.types";
+
 export type Artist = {
   _id?: string;
   name: string;
@@ -12,7 +14,7 @@ export type ArtistState = {
   createArtistSuccess: boolean;
   delArtistSuccess: boolean;
   updateArtistSuccess: boolean;
-  error: string;
+  error: CustomError | string;
 };
 
 export type ArtistResponse = {

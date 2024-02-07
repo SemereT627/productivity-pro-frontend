@@ -4,12 +4,18 @@ import { useDispatch } from "react-redux";
 import { RootStates } from "../../store/interface";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchGenresStart } from "../../store/features/genre.slice";
+import {
+  clearDeleteGenre,
+  deleteGenreStart,
+  fetchGenresStart,
+} from "../../store/features/genre.slice";
 import { Genre } from "../../store/types/genre.types";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomDrawer from "../../components/common/Drawer";
 import GenreForm from "../../components/dashboard/genre/forms/GenreForm";
 import { humanizeDateUTCWithTime } from "../../utils/humanizeDate";
+import { globalNotification } from "../../utils/notifications";
+import { CustomError } from "../../store/types/common.types";
 
 const DashboardGenrePage = () => {
   /**
@@ -27,7 +33,9 @@ const DashboardGenrePage = () => {
   /**
    * selectors
    */
-  const { genres, loading } = useSelector((state: RootStates) => state.genres);
+  const { genres, delGenreSuccess, loading, error } = useSelector(
+    (state: RootStates) => state.genres
+  );
 
   /**
    * functions
@@ -46,6 +54,23 @@ const DashboardGenrePage = () => {
   useEffect(() => {
     dispatch(fetchGenresStart());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (delGenreSuccess) {
+      globalNotification("success", "Genre deleted successfully");
+      dispatch(clearDeleteGenre());
+    }
+
+    if (typeof error !== "string") {
+      globalNotification("error", (error as CustomError).response.data.error);
+      dispatch(clearDeleteGenre());
+    }
+
+    if (typeof error === "string" && error) {
+      globalNotification("error", error as string);
+      dispatch(clearDeleteGenre());
+    }
+  }, [delGenreSuccess, dispatch, error]);
 
   /**
    * yup and formik
@@ -94,8 +119,8 @@ const DashboardGenrePage = () => {
             okText="Yes"
             okType="danger"
             cancelText="No"
-            // onConfirm={() => dispatch(deleteDriverAsync(id))}
-            // disabled={deleteDriverLoading}
+            onConfirm={() => dispatch(deleteGenreStart(genre._id))}
+            disabled={loading}
           >
             <Button danger>
               <DeleteOutlined /> Delete

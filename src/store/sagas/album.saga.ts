@@ -38,10 +38,24 @@ function* updateAlbumSaga(action: { payload: Album }) {
   }
 }
 
+function* deleteAlbumSaga(action: { payload: string }) {
+  try {
+    const response: AlbumResponse = yield call(
+      albumApi.deleteAlbum,
+      action.payload
+    );
+
+    yield put(actions.deleteAlbumSuccess(response._id));
+  } catch (error) {
+    yield put(actions.deleteAlbumFailure(error));
+  }
+}
+
 function* albumsSaga() {
   yield takeEvery(actions.fetchAlbumsStart, fetchAlbumsSaga);
   yield takeEvery(actions.createAlbumStart, createAlbumSaga);
   yield takeEvery(actions.updateAlbumStart, updateAlbumSaga);
+  yield takeEvery(actions.deleteAlbumStart, deleteAlbumSaga);
 }
 
 export default albumsSaga;

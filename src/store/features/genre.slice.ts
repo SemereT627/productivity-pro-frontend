@@ -5,6 +5,7 @@ const INITIAL_STATE: GenreState = {
   loading: false,
   createGenreSuccess: false,
   updateGenreSuccess: false,
+  delGenreSuccess: false,
   error: "",
   genres: [],
 };
@@ -64,11 +65,13 @@ const genreSlice = createSlice({
       state.updateGenreSuccess = false;
       state.error = "";
     },
-    deleteGenreStart: (state: GenreState) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    deleteGenreStart: (state: GenreState, action) => {
       state.loading = true;
     },
     deleteGenreSuccess: (state: GenreState, action) => {
       state.loading = false;
+      state.delGenreSuccess = true;
       state.genres = state.genres.filter(
         (genre) => genre._id !== action.payload
       );
@@ -76,6 +79,11 @@ const genreSlice = createSlice({
     deleteGenreFailure: (state: GenreState, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    clearDeleteGenre: (state: GenreState) => {
+      state.loading = false;
+      state.delGenreSuccess = false;
+      state.error = "";
     },
   },
 });
@@ -95,6 +103,7 @@ export const {
   deleteGenreStart,
   deleteGenreSuccess,
   deleteGenreFailure,
+  clearDeleteGenre,
 } = genreSlice.actions;
 
 export default genreSlice;

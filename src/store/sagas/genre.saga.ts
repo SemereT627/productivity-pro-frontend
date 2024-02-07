@@ -38,10 +38,24 @@ function* updateGenreSaga(action: { payload: Genre }) {
   }
 }
 
+function* deleteGenreSaga(action: { payload: string }) {
+  try {
+    const response: GenreResponse = yield call(
+      genreApi.deleteGenre,
+      action.payload
+    );
+
+    yield put(actions.deleteGenreSuccess(response._id));
+  } catch (error) {
+    yield put(actions.deleteGenreFailure(error));
+  }
+}
+
 function* genresSaga() {
   yield takeEvery(actions.fetchGenresStart, fetchGenresSaga);
   yield takeEvery(actions.createGenreStart, createGenreSaga);
   yield takeEvery(actions.updateGenreStart, updateGenreSaga);
+  yield takeEvery(actions.deleteGenreStart, deleteGenreSaga);
 }
 
 export default genresSaga;
