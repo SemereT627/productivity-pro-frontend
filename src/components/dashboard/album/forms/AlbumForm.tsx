@@ -22,7 +22,6 @@ type AlbumFormProps = {
 };
 
 const AlbumForm = ({ isEdit, album, onClose }: AlbumFormProps) => {
-  console.log(album);
   /**
    * states
    */

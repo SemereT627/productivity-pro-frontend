@@ -49,7 +49,6 @@ const songSlice = createSlice({
       state.loading = true;
     },
     updateSongSuccess: (state: SongState, action) => {
-      console.log(action);
       state.loading = false;
       state.updateSongSuccess = true;
       state.songs = state.songs.map((song) =>

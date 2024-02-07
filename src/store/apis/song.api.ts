@@ -14,7 +14,6 @@ const createSong = async (song: Song) => {
 };
 
 const updateSong = async (song: Song) => {
-  console.log(song);
   const response = await api.patch<Song>(`${SONGS_URL}/${song._id}`, song);
   return response.data;
 };
