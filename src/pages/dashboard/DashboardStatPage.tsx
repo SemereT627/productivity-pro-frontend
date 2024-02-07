@@ -112,58 +112,70 @@ const DashboardStatPage = () => {
         # of Songs by Genre
       </Typography.Title>
       <Row gutter={16}>
-        {genreSongs.map((genre) => {
-          return (
-            <Col span={6} key={genre._id._id}>
-              <CardStyled>
-                <CardTitleStyled>Genre - {genre._id.name}</CardTitleStyled>
-                <Typography.Text>
-                  <CountUp end={genre.count} /> Songs
-                </Typography.Text>
-              </CardStyled>
-            </Col>
-          );
-        })}
+        {genreSongs.length ? (
+          genreSongs.map((genre) => {
+            return (
+              <Col span={6} key={genre._id._id}>
+                <CardStyled>
+                  <CardTitleStyled>Genre - {genre._id.name}</CardTitleStyled>
+                  <Typography.Text>
+                    <CountUp end={genre.count} /> Songs
+                  </Typography.Text>
+                </CardStyled>
+              </Col>
+            );
+          })
+        ) : (
+          <Typography.Text>No songs found</Typography.Text>
+        )}
       </Row>
       <Typography.Title level={3} style={{ marginTop: "40px" }}>
         # of Songs and Albums by Artist
       </Typography.Title>
       <Row gutter={16}>
-        {artistStats.map((artist) => {
-          return (
-            <Col span={6} key={artist.artist}>
-              <CardStyled>
-                <CardTitleStyled>Artist - {artist.artist}</CardTitleStyled>
-                <Space direction="vertical">
-                  <Typography.Text>
-                    <CountUp end={artist.albums} /> Albums
-                  </Typography.Text>
+        {artistStats.length ? (
+          artistStats.map((artist) => {
+            return (
+              <Col span={6} key={artist.artist}>
+                <CardStyled>
+                  <CardTitleStyled>Artist - {artist.artist}</CardTitleStyled>
+                  <Space direction="vertical">
+                    <Typography.Text>
+                      <CountUp end={artist.albums} /> Albums
+                    </Typography.Text>
 
-                  <Typography.Text>
-                    <CountUp end={artist.songs} /> Songs
-                  </Typography.Text>
-                </Space>
-              </CardStyled>
-            </Col>
-          );
-        })}
+                    <Typography.Text>
+                      <CountUp end={artist.songs} /> Songs
+                    </Typography.Text>
+                  </Space>
+                </CardStyled>
+              </Col>
+            );
+          })
+        ) : (
+          <Typography.Text>No songs found</Typography.Text>
+        )}
       </Row>
       <Typography.Title level={3} style={{ marginTop: "40px" }}>
         # of Songs in Albums
       </Typography.Title>
       <Row gutter={16}>
-        {albumSongs.map((album, index) => {
-          return (
-            <Col span={6} key={album._id.title + index}>
-              <CardStyled>
-                <CardTitleStyled>Album - {album._id.title}</CardTitleStyled>
-                <Typography.Text>
-                  <CountUp end={album.count} /> Songs
-                </Typography.Text>
-              </CardStyled>
-            </Col>
-          );
-        })}
+        {albumSongs.length ? (
+          albumSongs.map((album, index) => {
+            return (
+              <Col span={6} key={album._id.title + index}>
+                <CardStyled>
+                  <CardTitleStyled>Album - {album._id.title}</CardTitleStyled>
+                  <Typography.Text>
+                    <CountUp end={album.count} /> Songs
+                  </Typography.Text>
+                </CardStyled>
+              </Col>
+            );
+          })
+        ) : (
+          <Typography.Text>No songs found</Typography.Text>
+        )}
       </Row>
     </>
   );

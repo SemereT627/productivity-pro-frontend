@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { RootStates } from "../../store/interface";
 import { useEffect, useState } from "react";
-import { fetchArtistsStart } from "../../store/features/artist.slice";
+import {
+  clearDeleteArtist,
+  deleteArtistStart,
+  fetchArtistsStart,
+} from "../../store/features/artist.slice";
 import { Artist } from "../../store/types/artist.types";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CustomDrawer from "../../components/common/Drawer";
@@ -13,6 +17,7 @@ import {
   humanizeDateUTCWithTime,
   humanizeDateUTCWithoutTime,
 } from "../../utils/humanizeDate";
+import { globalNotification } from "../../utils/notifications";
 
 const DashboardArtistPage = () => {
   /**
@@ -30,7 +35,7 @@ const DashboardArtistPage = () => {
   /**
    * selectors
    */
-  const { artists, loading } = useSelector(
+  const { artists, loading, delArtistSuccess, error } = useSelector(
     (state: RootStates) => state.artists
   );
 
@@ -51,6 +56,18 @@ const DashboardArtistPage = () => {
   useEffect(() => {
     dispatch(fetchArtistsStart());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (delArtistSuccess) {
+      globalNotification("success", "Artist deleted successfully");
+      dispatch(clearDeleteArtist());
+    }
+
+    if (error) {
+      globalNotification("error", error);
+      dispatch(clearDeleteArtist());
+    }
+  }, [delArtistSuccess, dispatch, error]);
 
   /**
    * yup and formik
@@ -105,8 +122,8 @@ const DashboardArtistPage = () => {
             okText="Yes"
             okType="danger"
             cancelText="No"
-            // onConfirm={() => dispatch(deleteDriverAsync(id))}
-            // disabled={deleteDriverLoading}
+            onConfirm={() => dispatch(deleteArtistStart(record._id!))}
+            disabled={loading}
           >
             <Button danger>
               <DeleteOutlined /> Delete

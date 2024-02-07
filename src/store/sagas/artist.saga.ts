@@ -38,10 +38,24 @@ function* updateArtistSaga(action: { payload: Artist }) {
   }
 }
 
+function* deleteArtistSaga(action: { payload: string }) {
+  try {
+    const response: ArtistResponse = yield call(
+      artistApi.deleteArtist,
+      action.payload
+    );
+
+    yield put(actions.deleteArtistSuccess(response._id));
+  } catch (error) {
+    yield put(actions.deleteArtistFailure(error));
+  }
+}
+
 function* artistsSaga() {
   yield takeEvery(actions.fetchArtistsStart, fetchArtistsSaga);
   yield takeEvery(actions.createArtistStart, createArtistSaga);
   yield takeEvery(actions.updateArtistStart, updateArtistSaga);
+  yield takeEvery(actions.deleteArtistStart, deleteArtistSaga);
 }
 
 export default artistsSaga;

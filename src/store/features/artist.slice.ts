@@ -5,6 +5,7 @@ const INITIAL_STATE: ArtistState = {
   loading: false,
   createArtistSuccess: false,
   updateArtistSuccess: false,
+  delArtistSuccess: false,
   error: "",
 
   artists: [],
@@ -65,18 +66,25 @@ const artistSlice = createSlice({
       state.updateArtistSuccess = false;
       state.error = "";
     },
-    deleteArtistStart: (state: ArtistState) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    deleteArtistStart: (state: ArtistState, action) => {
       state.loading = true;
     },
     deleteArtistSuccess: (state: ArtistState, action) => {
       state.loading = false;
+      state.delArtistSuccess = true;
       state.artists = state.artists.filter(
-        (artist) => artist._id !== action.payload._id
+        (artist) => artist._id !== action.payload
       );
     },
     deleteArtistFailure: (state: ArtistState, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    clearDeleteArtist: (state: ArtistState) => {
+      state.loading = false;
+      state.delArtistSuccess = false;
+      state.error = "";
     },
   },
 });
@@ -96,6 +104,7 @@ export const {
   deleteArtistStart,
   deleteArtistSuccess,
   deleteArtistFailure,
+  clearDeleteArtist,
 } = artistSlice.actions;
 
 export default artistSlice;
